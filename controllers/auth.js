@@ -33,20 +33,20 @@ exports.postLogin =async (req, res, next) => {
         where: { email: email }
     });
 
-   if(records.length ==0){
-       // no user
-       res.json({"status":401,"message":"no user present"});
-   }else{
+    if(records.length ==0){
+        // no user
+        res.json({"status":401,"message":"no user present"});
+    }else{
 
-       if(records[0].password == password){
-           req.session.isLoggedIn = true;
+        if(records[0].password == password){
+            req.session.isLoggedIn = true;
             req.session.userId = records[0].id;
-           res.json({"status":200,"message":"authorized","isAdmin":records[0].isAdmin, "userId":records[0].id
-                   ,name:records[0].firstName+" "+records[0].lastName});
-       }else{
-           res.json({"status":401,"message":"wrong password"});
-       }
-   }
+            res.json({"status":200,"message":"authorized","isAdmin":records[0].isAdmin, "userId":records[0].id
+                ,name:records[0].firstName+" "+records[0].lastName});
+        }else{
+            res.json({"status":401,"message":"wrong password"});
+        }
+    }
 
 
 
@@ -59,11 +59,11 @@ exports.getAllUsers = async (req,res,next)=>{
     });
 
 
-   let arr = records.map(el=>{
-       return {id:el.id,firstName:el.firstName,lastName:el.lastName,
-           email:el.email,
-           dateCreated : el.createdAt}
-   })
+    let arr = records.map(el=>{
+        return {id:el.id,firstName:el.firstName,lastName:el.lastName,
+            email:el.email,
+            dateCreated : el.createdAt}
+    })
 
     res.json({"status":200,"data":arr});
 }
