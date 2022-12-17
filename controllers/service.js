@@ -25,11 +25,13 @@ exports.markResolved = async(req,res,next)=>{
 exports.createServiceRequest = async (req,res,next)=> {
     const device = req.body.device;
     const description = req.body.description;
-    const userId=req.body.userId
+    const userId=req.body.userId;
+    const requestType = req.body.requestType;
     await service.create({
         device: device,
         description: description,
         userId:userId,
+        requestType:requestType
     });
     res.json({status:'200'});
 }
@@ -43,10 +45,12 @@ exports.getAllServiceRequests = async(req,res,next)=>{
     let arr = records.map(el=>{
         return {
             id:el.id,
-            userId:el.userId,
-            device:el.device,
-            description:el.description,
-            dateCreated : el.createdAt}
+            userId : el.userId,
+            device : el.device,
+            description : el.description,
+            dateCreated : el.createdAt,
+            requestType : el.requestType
+        }
     })
 
     res.json({status:'200',data:arr})

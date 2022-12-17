@@ -69,10 +69,10 @@ const getAllDeviceMetrics = async (req,res,next)=>{
         let lightMetrics = 0;
 
         for (const lightsKey of lights) {
-            if(lightKey.status)
+            if(lightsKey.status)
             lightMetrics += (( Math.floor(Date.now() / (1000)) - lightsKey.start_time + lightsKey.running_time )/3600 )* lightsKey.power;
             else
-                lightMetrics += ((lightKey.running_time )/3600)* lightKey.power;
+                lightMetrics += ((lightsKey.running_time )/3600)* lightsKey.power;
         }
         return lightMetrics;
     }

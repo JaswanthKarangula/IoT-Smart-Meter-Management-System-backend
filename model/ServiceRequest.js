@@ -1,58 +1,41 @@
 
-const service = require('../model/ServiceRequest');
+const Sequelize = require('sequelize');
+
+const seq = require('../util/database')
 
 
-exports.deleteServiceRequest = async(req,res,next)=>{
 
-}
-
-exports.markResolved = async(req,res,next)=>{
-
-    const records =  await service.update(
-        {
-            resolved: true,
-        },{
-            where: { id: req.body.id }
-        }
-
-    );
-
-
-    res.json(200);
-}
-
-
-exports.createServiceRequest = async (req,res,next)=> {
-    const device = req.body.device;
-    const description = req.body.description;
-    const userId=req.body.userId;
-    const requestType = req.body.requestType;
-    await service.create({
-        device: device,
-        description: description,
-        userId:userId,
-        requestType:requestType
-    });
-    res.json({status:'200'});
-}
+const service =seq.define('serviceRequest',{
+    id:{
+        type:Sequelize.INTEGER,
+        autoIncrement:true,
+        allowNull:false,
+        primaryKey:true
+    },
+    device:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+    description:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+    userId:{
+        type:Sequelize.INTEGER,
+        allowNull:false,
+    },
+    resolved:{
+        type:Sequelize.BOOLEAN,
+        defaultValue: false
+    },
+    requestType:{
+        type:Sequelize.STRING,
+        defaultValue: false
+    }
 
 
-exports.getAllServiceRequests = async(req,res,next)=>{
-    const records =  await service.findAll({
-        where: { resolved: false }
-    });
+});
 
-    let arr = records.map(el=>{
-        return {
-            id:el.id,
-            userId : el.userId,
-            device : el.device,
-            description : el.description,
-            dateCreated : el.createdAt,
-            requestType : el.requestType
-        }
-    })
+module.exports = service;
 
-    res.json({status:'200',data:arr})
 
-}
