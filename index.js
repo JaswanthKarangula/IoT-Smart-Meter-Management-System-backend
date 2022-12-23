@@ -37,6 +37,10 @@ const c1 = require('./model/nosql/water_meter');
 const water = require('./model/water_meter');
 const weather = require('./model/weather_sensor');
 
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./swagger.json');
+var pathfinderUI = require('pathfinder-ui')
+
 
 let SERVER_PORT = 4000;
 
@@ -63,6 +67,17 @@ app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next()
 });
+
+app.use(
+    '/api-docs',
+    swaggerUi.serve, 
+    swaggerUi.setup(swaggerDocument)
+  );
+
+app.use('/pathfinder', function(req, res, next){
+	pathfinderUI(app)
+	next()
+}, pathfinderUI.router)
 
 
 app.use(auth);
